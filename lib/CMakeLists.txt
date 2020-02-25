@@ -1,0 +1,1 @@
+add_library(AlgorithmModule Algorithm.h Algorithm.cpp)

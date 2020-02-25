@@ -1,0 +1,1 @@
+add_library(UtilsModule Utils.h Utils.cpp)
