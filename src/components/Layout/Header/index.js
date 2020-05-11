@@ -7,6 +7,9 @@ const Header = () => (
       <Link to="/">На початок</Link>
     </h5>
     <nav className="ml-auto mr-3">
+      <Link to="/state" className="p-2 text-dark">
+        State
+      </Link>
       <Link to="/link1" className="p-2 text-dark">
         Link 1
       </Link>
