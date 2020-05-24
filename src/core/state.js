@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import Test from "./test";
 
 class State {
@@ -15,8 +16,17 @@ class State {
 
   fitnessValue = null;
 
-  constructor(tests) {
-    if (!tests[0][0]) throw new Error("Invalid tests");
+  constructor(_tests) {
+    const firstTest = _tests[0][0];
+    const isSkeleton = typeof firstTest === "number";
+    if (!isSkeleton && !firstTest) {
+      throw new Error("Invalid tests");
+    }
+    const tests = isSkeleton
+      ? _tests.map((questionTests) =>
+          questionTests.map((complexity) => new Test(complexity))
+        )
+      : _tests;
     this.tests = tests;
     this.totalQuestions = tests.length;
     this.totalCategories = tests[0].length;
@@ -32,16 +42,7 @@ class State {
       new Set()
     );
 
-    this.calculateComplexities();
-    this.totalComplexity = tests.reduce(
-      (sum, questionTests) =>
-        sum +
-        questionTests.reduce(
-          (questionSum, test) => questionSum + test.complexity,
-          0
-        ),
-      0
-    );
+    if (this.suites.size) this.calculateComplexities();
   }
 
   static initSample() {
@@ -86,6 +87,11 @@ class State {
   #fitness = () => {
     const complexityArr = [...this.suiteComplexities.values()].sort();
     return Math.abs(complexityArr[0] - complexityArr[complexityArr.length - 1]);
+  };
+
+  clone = () => {
+    const tests = cloneDeep(this.tests);
+    return new State(tests);
   };
 }
 
