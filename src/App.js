@@ -5,14 +5,20 @@ import { HashRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
 import State from "./components/State";
+import DataState from "./core/state";
+import secondProblem from "./problems/2";
 
 function App() {
+  const state = DataState.initSample();
+  const secondState = new DataState(secondProblem);
+  secondState.randomizeSuites(2);
   return (
     <Router>
       <Layout>
         <Switch>
           <Route path="/state">
-            <State />
+            <State state={state} />
+            <State state={secondState} />
           </Route>
           <Route path="/">
             <Home />

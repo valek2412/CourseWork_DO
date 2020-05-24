@@ -1,4 +1,5 @@
-import { cloneDeep } from "lodash";
+import { cloneDeep, times, sample } from "lodash";
+import { filterObjectByValue } from "core/helpers";
 import Test from "./test";
 
 class State {
@@ -30,19 +31,8 @@ class State {
     this.tests = tests;
     this.totalQuestions = tests.length;
     this.totalCategories = tests[0].length;
-    this.suites = tests.reduce(
-      (suites, questionTests) =>
-        new Set([
-          ...questionTests.reduce(
-            (qSuites, test) => new Set([...qSuites, test.suite]),
-            new Set()
-          ),
-          ...suites,
-        ]),
-      new Set()
-    );
-
-    if (this.suites.size) this.calculateComplexities();
+    this.#defineSuites();
+    this.calculateComplexities();
   }
 
   static initSample() {
@@ -57,7 +47,22 @@ class State {
     return new State(tests);
   }
 
+  #defineSuites = () => {
+    this.suites = this.tests.reduce(
+      (suites, questionTests) =>
+        new Set([
+          ...questionTests.reduce(
+            (qSuites, test) => new Set([...qSuites, test.suite]),
+            new Set()
+          ),
+          ...suites,
+        ]),
+      new Set()
+    );
+  };
+
   calculateComplexities = () => {
+    if (!this.suites.size) return;
     const complexities = new Map();
 
     let totalComplexity = 0;
@@ -93,6 +98,47 @@ class State {
     const tests = cloneDeep(this.tests);
     return new State(tests);
   };
+
+  randomizeSuites = (suitsTotalCount) => {
+    // in each category should be equal numbers of suits
+    const suiteCountPerCategory = this.totalQuestions / suitsTotalCount;
+
+    const transposedTests = this.#transposeTests();
+
+    transposedTests.forEach((categoryTests) => {
+      const suites = {};
+      times(suitsTotalCount, (i) => {
+        suites[i + 1] = suiteCountPerCategory;
+      });
+      categoryTests.forEach((test) => {
+        const permittedSuites = filterObjectByValue(suites, (val) => val > 0);
+        const randomSuite = sample(Object.keys(permittedSuites));
+        // eslint-disable-next-line no-param-reassign
+        test.suite = randomSuite;
+        suites[randomSuite]--;
+      });
+    });
+
+    this.#defineSuites();
+    this.calculateComplexities();
+  };
+
+  /**
+   *
+   FROM [
+   [1,2,3],
+   [1,2,3],
+   [1,2,3],
+   ]
+   TO
+   [
+   [1,1,1],
+   [2,2,2],
+   [3,3,3],
+   ]
+   */
+  #transposeTests = () =>
+    this.tests[0].map((col, i) => this.tests.map((row) => row[i]));
 }
 
 export default State;
