@@ -66,5 +66,6 @@ module.exports = {
     "function-call-argument-newline": [2, "consistent"],
     "brace-style": 2,
     "prefer-destructuring": 2,
+    "no-plusplus": 0,
   },
 };

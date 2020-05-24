@@ -1,8 +1,18 @@
 import React from "react";
-import DataState from "core/state";
+import getRandomColor from "randomcolor";
 
-const State = () => {
-  const state = DataState.initSample();
+const State = ({ state }) => {
+  const colors = [...state.suites].reduce(
+    (acc, currSuite) => ({
+      ...acc,
+      [currSuite]: getRandomColor({
+        luminosity: "bright",
+        alpha: 0.3,
+        format: "rgba",
+      }),
+    }),
+    {}
+  );
   return (
     <table className="table">
       <thead>
@@ -20,7 +30,7 @@ const State = () => {
           <tr>
             <th scope="row">Запитання {i + 1}</th>
             {questionTests.map((test) => (
-              <td>
+              <td style={{ backgroundColor: colors[test.suite] }}>
                 {test.complexity}
                 <span className="ml-3 badge badge-primary">{test.suite}</span>
               </td>
