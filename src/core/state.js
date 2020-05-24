@@ -7,30 +7,40 @@ class State {
 
   totalCategories = null;
 
-  totalCost = 0;
+  totalComplexity = null;
 
-  sets = null;
+  suites = null;
+
+  suiteComplexities = null;
+
+  fitnessValue = null;
 
   constructor(tests) {
+    if (!tests[0][0]) throw new Error("Invalid tests");
     this.tests = tests;
     this.totalQuestions = tests.length;
     this.totalCategories = tests[0].length;
-    this.totalCost = tests.reduce(
-      (sum, questionTests) =>
-        sum +
-        questionTests.reduce((questionSum, test) => questionSum + test.cost, 0),
-      0
-    );
-    this.sets = tests.reduce(
-      (set, questionTests) =>
+    this.suites = tests.reduce(
+      (suites, questionTests) =>
         new Set([
           ...questionTests.reduce(
-            (qSet, test) => new Set([...qSet, test.set]),
+            (qSuites, test) => new Set([...qSuites, test.suite]),
             new Set()
           ),
-          ...set,
+          ...suites,
         ]),
       new Set()
+    );
+
+    this.calculateComplexities();
+    this.totalComplexity = tests.reduce(
+      (sum, questionTests) =>
+        sum +
+        questionTests.reduce(
+          (questionSum, test) => questionSum + test.complexity,
+          0
+        ),
+      0
     );
   }
 
@@ -45,6 +55,38 @@ class State {
     ];
     return new State(tests);
   }
+
+  calculateComplexities = () => {
+    const complexities = new Map();
+
+    let totalComplexity = 0;
+
+    this.suites.forEach((suite) => {
+      const complexity = this.#calcSuiteComplexity(suite);
+      complexities.set(suite, complexity);
+      totalComplexity += complexity;
+    });
+
+    this.suiteComplexities = complexities;
+    this.totalComplexity = totalComplexity;
+    this.fitnessValue = this.#fitness();
+  };
+
+  #calcSuiteComplexity = (suite) =>
+    this.tests.reduce(
+      (sum, questionTests) =>
+        sum +
+        questionTests.reduce((questionSum, test) => {
+          if (test.suite !== suite) return questionSum;
+          return questionSum + test.complexity;
+        }, 0),
+      0
+    );
+
+  #fitness = () => {
+    const complexityArr = [...this.suiteComplexities.values()].sort();
+    return Math.abs(complexityArr[0] - complexityArr[complexityArr.length - 1]);
+  };
 }
 
 export default State;
