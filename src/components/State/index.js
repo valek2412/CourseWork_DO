@@ -21,8 +21,8 @@ const State = () => {
             <th scope="row">Запитання {i + 1}</th>
             {questionTests.map((test) => (
               <td>
-                {test.cost}
-                <span className="ml-3 badge badge-primary">{test.set}</span>
+                {test.complexity}
+                <span className="ml-3 badge badge-primary">{test.suite}</span>
               </td>
             ))}
           </tr>

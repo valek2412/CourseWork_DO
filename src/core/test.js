@@ -1,11 +1,11 @@
 class Test {
-  set = null;
+  complexity = null;
 
-  cost = 0;
+  suite = null;
 
-  constructor(cost, set) {
-    this.cost = cost;
-    this.set = set;
+  constructor(complexity, suite) {
+    this.complexity = complexity;
+    this.suite = suite;
   }
 }
 

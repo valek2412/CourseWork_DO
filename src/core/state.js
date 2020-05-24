@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import Test from "./test";
 
 class State {
@@ -7,31 +8,41 @@ class State {
 
   totalCategories = null;
 
-  totalCost = 0;
+  totalComplexity = null;
 
-  sets = null;
+  suites = null;
 
-  constructor(tests) {
+  suiteComplexities = null;
+
+  fitnessValue = null;
+
+  constructor(_tests) {
+    const firstTest = _tests[0][0];
+    const isSkeleton = typeof firstTest === "number";
+    if (!isSkeleton && !firstTest) {
+      throw new Error("Invalid tests");
+    }
+    const tests = isSkeleton
+      ? _tests.map((questionTests) =>
+          questionTests.map((complexity) => new Test(complexity))
+        )
+      : _tests;
     this.tests = tests;
     this.totalQuestions = tests.length;
     this.totalCategories = tests[0].length;
-    this.totalCost = tests.reduce(
-      (sum, questionTests) =>
-        sum +
-        questionTests.reduce((questionSum, test) => questionSum + test.cost, 0),
-      0
-    );
-    this.sets = tests.reduce(
-      (set, questionTests) =>
+    this.suites = tests.reduce(
+      (suites, questionTests) =>
         new Set([
           ...questionTests.reduce(
-            (qSet, test) => new Set([...qSet, test.set]),
+            (qSuites, test) => new Set([...qSuites, test.suite]),
             new Set()
           ),
-          ...set,
+          ...suites,
         ]),
       new Set()
     );
+
+    if (this.suites.size) this.calculateComplexities();
   }
 
   static initSample() {
@@ -45,6 +56,43 @@ class State {
     ];
     return new State(tests);
   }
+
+  calculateComplexities = () => {
+    const complexities = new Map();
+
+    let totalComplexity = 0;
+
+    this.suites.forEach((suite) => {
+      const complexity = this.#calcSuiteComplexity(suite);
+      complexities.set(suite, complexity);
+      totalComplexity += complexity;
+    });
+
+    this.suiteComplexities = complexities;
+    this.totalComplexity = totalComplexity;
+    this.fitnessValue = this.#fitness();
+  };
+
+  #calcSuiteComplexity = (suite) =>
+    this.tests.reduce(
+      (sum, questionTests) =>
+        sum +
+        questionTests.reduce((questionSum, test) => {
+          if (test.suite !== suite) return questionSum;
+          return questionSum + test.complexity;
+        }, 0),
+      0
+    );
+
+  #fitness = () => {
+    const complexityArr = [...this.suiteComplexities.values()].sort();
+    return Math.abs(complexityArr[0] - complexityArr[complexityArr.length - 1]);
+  };
+
+  clone = () => {
+    const tests = cloneDeep(this.tests);
+    return new State(tests);
+  };
 }
 
 export default State;
