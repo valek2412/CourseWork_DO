@@ -9,7 +9,8 @@
     "clean": "rm -rf build",
     "predeploy": "yarn clean && yarn build",
     "deploy": "gh-pages -d build",
-    "lint": "eslint . --ignore-path .gitignore --fix 'src/**/*.js'"
+    "lint": "eslint . --ignore-path .gitignore --fix 'src/**/*.js'",
+    "pre-commit": "lint-staged"
   },
   "author": "<Val Oleh & Velikiy Dan>",
   "license": "MIT",
@@ -42,6 +43,8 @@
     "gh-pages": "^2.2.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.6",
     "prettier": "^2.0.5",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
@@ -64,5 +67,16 @@
     "react-hot-loader": "^4.12.21",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --no-ignore --fix",
+      "git add --force"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn pre-commit"
+    }
   }
 }
