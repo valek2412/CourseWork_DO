@@ -10,6 +10,9 @@ const Header = () => (
       <Link to="/state" className="p-2 text-dark">
         State
       </Link>
+      <Link to="/dummy" className="p-2 text-dark">
+        Dummy
+      </Link>
       <Link to="/link1" className="p-2 text-dark">
         Link 1
       </Link>

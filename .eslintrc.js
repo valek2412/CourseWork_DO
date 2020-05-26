@@ -3,6 +3,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jest: true,
   },
   extends: ["plugin:react/recommended", "airbnb", "prettier", "prettier/react"],
   globals: {
@@ -14,7 +15,7 @@ module.exports = {
     sourceType: "module",
   },
   parser: "babel-eslint",
-  plugins: ["react", "unused-imports", "prettier"],
+  plugins: ["react", "unused-imports", "prettier", "jest"],
   settings: {
     "import/resolver": {
       node: {
@@ -67,5 +68,8 @@ module.exports = {
     "brace-style": 2,
     "prefer-destructuring": 2,
     "no-plusplus": 0,
+    "no-continue": 0,
+    "prefer-template": 2,
+    "import/prefer-default-export": 1,
   },
 };

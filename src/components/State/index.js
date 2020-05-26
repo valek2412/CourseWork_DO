@@ -20,17 +20,22 @@ const State = ({ state }) => {
           <th scope="col">Запитання / Категорії</th>
           {Array.from({ length: state.totalCategories }, (v, i) => i + 1).map(
             (j) => (
-              <th scope="col">Категорія {j}</th>
+              <th scope="col" key={String(j)}>
+                Категорія {j}
+              </th>
             )
           )}
         </tr>
       </thead>
       <tbody>
         {state.tests.map((questionTests, i) => (
-          <tr>
+          <tr key={String(i)}>
             <th scope="row">Запитання {i + 1}</th>
-            {questionTests.map((test) => (
-              <td style={{ backgroundColor: colors[test.suite] }}>
+            {questionTests.map((test, j) => (
+              <td
+                key={String(`${i}_${j}`)}
+                style={{ backgroundColor: colors[test.suite] }}
+              >
                 {test.complexity}
                 <span className="ml-3 badge badge-primary">{test.suite}</span>
               </td>
