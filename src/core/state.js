@@ -1,6 +1,7 @@
 import { cloneDeep, times, sample } from "lodash";
 import { filterObjectByValue } from "core/helpers";
 import Test from "./test";
+import { transposeMatrix } from "./utils";
 
 class State {
   tests = null;
@@ -11,23 +12,29 @@ class State {
 
   totalComplexity = null;
 
+  // set
   suites = null;
 
+  // map
   suiteComplexities = null;
 
   fitnessValue = null;
 
-  constructor(_tests) {
-    const firstTest = _tests[0][0];
+  constructor(data, transposed = false) {
+    let initTests;
+    if (transposed) {
+      initTests = transposeMatrix(data);
+    } else initTests = data;
+    const firstTest = initTests[0][0];
     const isSkeleton = typeof firstTest === "number";
     if (!isSkeleton && !firstTest) {
       throw new Error("Invalid tests");
     }
     const tests = isSkeleton
-      ? _tests.map((questionTests) =>
+      ? initTests.map((questionTests) =>
           questionTests.map((complexity) => new Test(complexity))
         )
-      : _tests;
+      : initTests;
     this.tests = tests;
     this.totalQuestions = tests.length;
     this.totalCategories = tests[0].length;
@@ -103,7 +110,7 @@ class State {
     // in each category should be equal numbers of suits
     const suiteCountPerCategory = this.totalQuestions / suitsTotalCount;
 
-    const transposedTests = this.#transposeTests();
+    const transposedTests = this.transposeTests();
 
     transposedTests.forEach((categoryTests) => {
       const suites = {};
@@ -123,22 +130,7 @@ class State {
     this.calculateComplexities();
   };
 
-  /**
-   *
-   FROM [
-   [1,2,3],
-   [1,2,3],
-   [1,2,3],
-   ]
-   TO
-   [
-   [1,1,1],
-   [2,2,2],
-   [3,3,3],
-   ]
-   */
-  #transposeTests = () =>
-    this.tests[0].map((col, i) => this.tests.map((row) => row[i]));
+  transposeTests = () => transposeMatrix(this.tests);
 }
 
 export default State;

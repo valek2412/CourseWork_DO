@@ -5,6 +5,7 @@ import { HashRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
 import State from "./components/State";
+import Dummy from "./components/Dummy";
 import DataState from "./core/state";
 import secondProblem from "./problems/2";
 
@@ -19,6 +20,9 @@ function App() {
           <Route path="/state">
             <State state={state} />
             <State state={secondState} />
+          </Route>
+          <Route path="/dummy">
+            <Dummy />
           </Route>
           <Route path="/">
             <Home />
