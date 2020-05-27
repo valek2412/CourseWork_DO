@@ -16,7 +16,7 @@ const getSuitesData = (suiteComplexities) => {
 
 const simulateState = (_state, categoryIndex, i, j) => {
   const state = _state.clone();
-  const transponatedMatrix = state.transposeTests();
+  const transponatedMatrix = state.getTransposedTests();
   [
     transponatedMatrix[categoryIndex][i].suite,
     transponatedMatrix[categoryIndex][j].suite,
@@ -30,7 +30,7 @@ const simulateState = (_state, categoryIndex, i, j) => {
 
 const optimize = (_state) => {
   const state = _state.clone();
-  const transponatedMatrix = state.transposeTests();
+  const transponatedMatrix = state.getTransposedTests();
   let isOptimized = false;
   const optimizedTests = transponatedMatrix.reduce(
     (acc, categoryTests, idx, srcArr) => {
@@ -59,7 +59,7 @@ const optimize = (_state) => {
             // optimized
             if (simulatedState.fitnessValue > tempState.fitnessValue) {
               isOptimized = true;
-              const transponatedMatrixOfOptimizedState = simulatedState.transposeTests();
+              const transponatedMatrixOfOptimizedState = simulatedState.getTransposedTests();
 
               cache = [...acc, transponatedMatrixOfOptimizedState[idx]];
             }

@@ -1,4 +1,6 @@
 const filterObjectByValue = (object, func) =>
-  Object.keys(object).filter((s) => func(object[s]));
+  Object.fromEntries(
+    Object.entries(object).filter(([, value]) => value |> func)
+  );
 
 export default filterObjectByValue;

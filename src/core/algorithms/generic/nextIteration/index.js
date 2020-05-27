@@ -5,16 +5,36 @@ import optimizeLocally from "./optimizeLocally";
 
 const nextIteration = (population) => {
   // selection
+  const beforeSelection = new Date();
   const parents = selection(population);
-  // generating successors
-  const successors = createSuccessors(parents);
-  // mutate successors
-  const mutatedSuccessors = mutateSuccessors(successors);
-  // local optimization
-  const optimizedSuccessors = optimizeLocally(mutatedSuccessors);
+  const afterSelection = new Date();
 
-  // returning new population
-  return optimizedSuccessors;
+  // generating successors
+  const beforeCreatingSuccessors = new Date();
+  const successors = createSuccessors(parents);
+  const afterCreatingSuccessors = new Date();
+
+  // mutate successors
+  const beforeMutationSuccessors = new Date();
+  const mutatedSuccessors = mutateSuccessors(successors);
+  const afterMutatingSuccessors = new Date();
+
+  // local optimization
+  const beforeOptimizingSuccessors = new Date();
+  const optimizedSuccessors = optimizeLocally(mutatedSuccessors);
+  const afterOptimizingSuccessors = new Date();
+
+  const metaData = {
+    selectionDiff: afterSelection - beforeSelection,
+    creatingSuccessorsDiff: afterCreatingSuccessors - beforeCreatingSuccessors,
+    mutatingSuccessorsDiff: afterMutatingSuccessors - beforeMutationSuccessors,
+    optimizingSuccessorsDiff:
+      afterOptimizingSuccessors - beforeOptimizingSuccessors,
+    generalDiff: afterOptimizingSuccessors - beforeSelection,
+  };
+
+  // returning new population and meta data
+  return [optimizedSuccessors, metaData];
 };
 
 export default nextIteration;

@@ -3,7 +3,7 @@ import State from "core/state";
 
 const mutate = (_state) => {
   const state = _state.clone();
-  const transponatedMatrix = state.transposeTests();
+  const transponatedMatrix = state.getTransposedTests();
   const randomCategoryIndex = random(state.totalCategories - 1);
   const [firstQuestionIndex, secondQuestionIndex] = [
     random(state.totalQuestions - 1),
