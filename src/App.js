@@ -12,7 +12,7 @@ import secondProblem from "./problems/2";
 function App() {
   const state = DataState.initSample();
   const secondState = new DataState(secondProblem);
-  secondState.randomizeSuites(2);
+  // secondState.randomizeSuites(2);
   return (
     <Router>
       <Layout>

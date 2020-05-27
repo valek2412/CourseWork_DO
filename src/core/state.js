@@ -1,7 +1,20 @@
-import { cloneDeep, times, sample } from "lodash";
+import { cloneDeep, times, sample, isNumber } from "lodash";
 import { filterObjectByValue } from "core/helpers";
+import getRandomColor from "randomcolor";
 import Test from "./test";
 import { transposeMatrix } from "./utils";
+
+const colorsEnum = Object.freeze([
+  `rgba(102, 187, 106,1.0)`,
+  `rgba(255, 238, 88,1.0)`,
+  `rgba(255, 167, 38,1.0)`,
+  `rgba(141, 110, 99,1.0)`,
+  `rgba(120, 144, 156,1.0)`,
+  `rgba(239, 83, 80,1.0)`,
+  `rgba(171, 71, 188,1.0)`,
+  `rgba(92, 107, 192,1.0)`,
+  `rgba(41, 182, 246,1.0)`,
+]);
 
 class State {
   tests = null;
@@ -58,10 +71,12 @@ class State {
     this.suites = this.tests.reduce(
       (suites, questionTests) =>
         new Set([
-          ...questionTests.reduce(
-            (qSuites, test) => new Set([...qSuites, test.suite]),
-            new Set()
-          ),
+          ...questionTests.reduce((qSuites, test) => {
+            if (isNumber(test.suite)) {
+              return new Set([...qSuites, test.suite]);
+            }
+            return qSuites;
+          }, new Set()),
           ...suites,
         ]),
       new Set()
@@ -110,8 +125,7 @@ class State {
     // in each category should be equal numbers of suits
     const suiteCountPerCategory = this.totalQuestions / suitsTotalCount;
 
-    const transposedTests = this.transposeTests();
-
+    const transposedTests = this.getTransposedTests();
     transposedTests.forEach((categoryTests) => {
       const suites = {};
       times(suitsTotalCount, (i) => {
@@ -121,16 +135,23 @@ class State {
         const permittedSuites = filterObjectByValue(suites, (val) => val > 0);
         const randomSuite = sample(Object.keys(permittedSuites));
         // eslint-disable-next-line no-param-reassign
-        test.suite = randomSuite;
+        test.suite = +randomSuite;
         suites[randomSuite]--;
       });
     });
-
     this.#defineSuites();
     this.calculateComplexities();
   };
 
-  transposeTests = () => transposeMatrix(this.tests);
+  getTransposedTests = () => transposeMatrix(this.tests);
+
+  getColor = (suite) =>
+    colorsEnum[suite - 1] ||
+    getRandomColor({
+      luminosity: "bright",
+      alpha: 0.3,
+      format: "rgba",
+    });
 }
 
 export default State;

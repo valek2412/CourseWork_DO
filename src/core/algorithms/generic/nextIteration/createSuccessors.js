@@ -3,7 +3,7 @@ import State from "core/state";
 import { randomPop2Items } from "../utils";
 
 const getGenesByCrossoverDot = (parent, crossoverDot) => {
-  const transponatedMatrix = parent.transposeTests();
+  const transponatedMatrix = parent.getTransposedTests();
 
   const firstGene = transponatedMatrix.slice(0, crossoverDot);
   const secondGene = transponatedMatrix.slice(crossoverDot);
