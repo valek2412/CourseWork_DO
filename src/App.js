@@ -6,6 +6,7 @@ import Home from "./components/Home";
 import Layout from "./components/Layout";
 import State from "./components/State";
 import Dummy from "./components/Dummy";
+import Dummy1 from "./components/Dummy1";
 import DataState from "./core/state";
 import secondProblem from "./problems/2";
 
@@ -23,6 +24,9 @@ function App() {
           </Route>
           <Route path="/dummy">
             <Dummy />
+          </Route>
+          <Route path="/dummy1">
+            <Dummy1 />
           </Route>
           <Route path="/">
             <Home />

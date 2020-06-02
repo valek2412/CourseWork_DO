@@ -112,7 +112,7 @@ class State {
     );
 
   #fitness = () => {
-    const complexityArr = [...this.suiteComplexities.values()].sort();
+    const complexityArr = [...this.suiteComplexities.values()].sort((a, b) => a-b);
     return Math.abs(complexityArr[0] - complexityArr[complexityArr.length - 1]);
   };
 

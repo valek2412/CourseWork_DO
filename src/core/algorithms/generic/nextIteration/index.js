@@ -1,7 +1,7 @@
 import selection from "./selection";
 import createSuccessors from "./createSuccessors";
 import mutateSuccessors from "./mutateSuccessors";
-import optimizeLocally from "./optimizeLocally";
+import optimizeLocally from "../../optimizeLocally";
 
 const nextIteration = (population) => {
   // selection

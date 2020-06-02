@@ -13,8 +13,8 @@ const Header = () => (
       <Link to="/dummy" className="p-2 text-dark">
         Dummy
       </Link>
-      <Link to="/link1" className="p-2 text-dark">
-        Link 1
+      <Link to="/dummy1" className="p-2 text-dark">
+        Dummy 1
       </Link>
       <Link to="/link2" className="p-2 text-dark">
         Link 2
