@@ -1,5 +1,5 @@
-import genericAlgorithm from "./generic";
+import geneticAlgorithm from "./genetic";
 import beeAlgorithm from "./bee";
+import greedyAlgorithm from "./greedy";
 
-// eslint-disable-next-line import/prefer-default-export
-export { genericAlgorithm, beeAlgorithm };
+export { geneticAlgorithm, beeAlgorithm, greedyAlgorithm };

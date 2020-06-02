@@ -10,7 +10,7 @@ const selection = (population) => {
     if (!isArray(gladiators)) {
       if (gladiators) {
         // only one
-        newPopulation.push(...gladiators);
+        newPopulation.push(gladiators);
       }
       continue;
     }

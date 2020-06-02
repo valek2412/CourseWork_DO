@@ -4,29 +4,23 @@ import { Route, Switch } from "react-router";
 import { HashRouter as Router } from "react-router-dom";
 import Home from "./components/Home";
 import Layout from "./components/Layout";
-import State from "./components/State";
-import Dummy from "./components/Dummy";
+import Genetic from "./components/Genetic";
 import Dummy1 from "./components/Dummy1";
-import DataState from "./core/state";
-import secondProblem from "./problems/2";
+import Greedy from "./components/Greedy";
 
 function App() {
-  const state = DataState.initSample();
-  const secondState = new DataState(secondProblem);
-  // secondState.randomizeSuites(2);
   return (
     <Router>
       <Layout>
         <Switch>
-          <Route path="/state">
-            <State state={state} />
-            <State state={secondState} />
-          </Route>
-          <Route path="/dummy">
-            <Dummy />
+          <Route path="/genetic">
+            <Genetic />
           </Route>
           <Route path="/dummy1">
             <Dummy1 />
+          </Route>
+          <Route path="/greedy">
+            <Greedy />
           </Route>
           <Route path="/">
             <Home />
