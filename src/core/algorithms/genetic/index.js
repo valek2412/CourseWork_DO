@@ -8,20 +8,26 @@ const createState = (_state, suitsTotalCount) => {
 };
 
 // todo: validate no repeats
-const generatePopulation = (initialState, suitsTotalCount) => {
-  const numberOfParents = 16;
-  return [...Array(numberOfParents)].map(() =>
+const generatePopulation = (initialState, suitsTotalCount, numberOfParents) =>
+  [...Array(numberOfParents)].map(() =>
     createState(initialState, suitsTotalCount)
   );
-};
 
-// todo: add metadata
-const genericAlgorithm = (initialState, suitsTotalCount, iterations) => {
+const geneticAlgorithm = (
+  initialState,
+  suitsTotalCount,
+  iterations,
+  numberOfParents
+) => {
   const before = new Date();
   // generating population
 
   const beforeInitialPopulation = new Date();
-  const initialPopulation = generatePopulation(initialState, suitsTotalCount);
+  const initialPopulation = generatePopulation(
+    initialState,
+    suitsTotalCount,
+    numberOfParents
+  );
   const afterInitialPopulation = new Date();
 
   let population = initialPopulation;
@@ -53,14 +59,20 @@ const genericAlgorithm = (initialState, suitsTotalCount, iterations) => {
   return { state, metaData };
 };
 
-const wrapper = (initialState, suitsTotalCount, iterations = 200) => {
-  const { state, metaData } = genericAlgorithm(
+const wrapper = (
+  initialState,
+  suitsTotalCount,
+  iterations,
+  numberOfParents
+) => {
+  const { state, metaData } = geneticAlgorithm(
     initialState,
     suitsTotalCount,
-    iterations
+    iterations,
+    numberOfParents
   );
   console.info("");
-  console.info(`genericAlgorithm in ${metaData.generalDiff} ms`);
+  console.info(`geneticAlgorithm in ${metaData.generalDiff} ms`);
   console.info(`initialPopulationDiff: ${metaData.initialPopulationDiff} ms`);
   console.info(`Current fitness value: ${state.fitnessValue}`);
   console.info(`Iterations: ${metaData.iterationsCount}`);

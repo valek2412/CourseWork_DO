@@ -10,11 +10,14 @@ const Header = () => (
       <Link to="/state" className="p-2 text-dark">
         State
       </Link>
-      <Link to="/dummy" className="p-2 text-dark">
-        Dummy
+      <Link to="genetic" className="p-2 text-dark">
+        Генетичний
       </Link>
       <Link to="/dummy1" className="p-2 text-dark">
         Dummy 1
+      </Link>
+      <Link to="/greedy" className="p-2 text-dark">
+        Жадібний
       </Link>
       <Link to="/link2" className="p-2 text-dark">
         Link 2
