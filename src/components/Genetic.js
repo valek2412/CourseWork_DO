@@ -99,9 +99,7 @@ const Genetic = () => {
         />
       </div>
       <State state={state} />
-      <h4 className="my-4">
-        <b>Дані найкращих особин популяцій</b>
-      </h4>
+
       {iterationData.map((iteration, i) => {
         const data = [
           {
@@ -123,8 +121,11 @@ const Genetic = () => {
         ];
         return (
           <div key={String(i)} className="mt-3">
+            <h4 className="my-4">
+              <b>Дані найкращих особин популяцій</b>
+            </h4>
             <h6>
-              <i>Покоління {i}</i>
+              <i>Покоління {i + 1}</i>
             </h6>
             <PieChart width={300} height={300}>
               <Pie
