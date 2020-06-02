@@ -14,7 +14,7 @@ const Header = () => (
         Генетичний
       </Link>
       <Link to="/dummy1" className="p-2 text-dark">
-        Dummy 1
+        Бджолиний
       </Link>
       <Link to="/greedy" className="p-2 text-dark">
         Жадібний

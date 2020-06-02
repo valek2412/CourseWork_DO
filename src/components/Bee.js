@@ -2,11 +2,13 @@ import React, { useState } from "react";
 
 import { beeAlgorithm } from "core/algorithms";
 import DataState from "core/state";
-import makeSkeleton from "../problems/makeSkeleton";
-import skeleton from "problems/1";
+
 import State from "components/State";
 import { Cell, PieChart, Tooltip, Pie } from "recharts";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 
+import makeSkeleton from "../problems/makeSkeleton";
 
 const getState = (skeleton, suitsTotalCount) => {
   const initialState = new DataState(skeleton);
@@ -40,7 +42,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-const Dummy1 = () => {
+const Bee = () => {
   const [amountCategories, setAmountCategories] = useState(4);
   const [amountTests, setAmountTests] = useState(8);
   const [suitsTotalCount, setSuitsTotalCount] = useState(4);
@@ -56,7 +58,7 @@ const Dummy1 = () => {
     const newSkeleton = makeSkeleton(amountTests, amountCategories);
     const newState = getState(newSkeleton, suitsTotalCount);
     setState(newState);
-    setProcessing(false)
+    setProcessing(false);
   };
 
   const algoHandler = () => {
@@ -77,57 +79,70 @@ const Dummy1 = () => {
   };
   return (
     <div className="table">
-        <div className="row">
-            <button
-                type="button"
-                onClick={createStateHandler}
-                disabled={processing}
-                className="btn btn-dark"
-            >
-                generate
-            </button>
-            <input
-                className="form-control col-1 ml-2"
-                onChange={(e) => setAmountCategories(+e.target.value)}
-                value={amountCategories}
-            />
-            <input
-                className="form-control col-1 ml-2"
-                onChange={(e) => setAmountTests(+e.target.value)}
-                value={amountTests}
-            />
-            <input
-                className="form-control col-1 ml-2"
-                onChange={(e) => setSuitsTotalCount(+e.target.value)}
-                value={suitsTotalCount}
-            />
-        </div>
       <div className="row">
-        <button
-          type="button"
-          onClick={algoHandler}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={createStateHandler}
           disabled={processing}
-          className="btn btn-dark"
         >
-          click me
-        </button>
-        <input
-          className="form-control col-1 ml-2"
-          onChange={(e) => setIterations(+e.target.value)}
-          value={iterations}
+          Згенерувати індивідуальну задачу
+        </Button>
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setAmountCategories(+e.target.value)}
+          value={amountCategories}
+          type="number"
+          label="Категорій"
         />
-        <input
-          className="form-control col-1 ml-2"
-          onChange={(e) => setAmountStartStates(+e.target.value)}
-          value={amountStartStates}
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setAmountTests(+e.target.value)}
+          value={amountTests}
+          type="number"
+          label="Тестів в категорії"
         />
-        <input
-          className="form-control col-1 ml-2"
-          onChange={(e) => setAmountBestStates(+e.target.value)}
-          value={amountBestStates}
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setSuitsTotalCount(+e.target.value)}
+          value={suitsTotalCount}
+          type="number"
+          label="Наборів тестів"
         />
       </div>
-        {(!state) ? null : <State state={state} />}
+      <br />
+      <div className="row">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={algoHandler}
+          disabled={processing}
+        >
+          Натисніть для запуска алгоритму
+        </Button>
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setIterations(+e.target.value)}
+          value={iterations}
+          type="number"
+          label="Ітерацій"
+        />
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setAmountStartStates(+e.target.value)}
+          value={amountStartStates}
+          type="number"
+          label="Стартових генерацій"
+        />
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setAmountBestStates(+e.target.value)}
+          value={amountBestStates}
+          type="number"
+          label="Кращих генерацій"
+        />
+      </div>
+      {!state ? null : <State state={state} />}
       <br />
       <br />
       <br />
@@ -177,4 +192,4 @@ const Dummy1 = () => {
   );
 };
 
-export default Dummy1;
+export default Bee;
