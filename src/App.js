@@ -16,7 +16,7 @@ function App() {
           <Route path="/genetic">
             <Genetic />
           </Route>
-          <Route path="/dummy1">
+          <Route path="/bee">
             <Bee />
           </Route>
           <Route path="/greedy">

@@ -1,60 +1,50 @@
-import React, { useState } from "react";
-
-import { geneticAlgorithm } from "core/algorithms";
-import DataState from "core/state";
-import skeleton from "problems/1";
+import React, { useRef, useState } from "react";
 import State from "components/State";
 import { Cell, PieChart, Tooltip, Pie } from "recharts";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-
-const getState = (suitsTotalCount) => {
-  const initialState = new DataState(skeleton);
-  initialState.randomizeSuites(suitsTotalCount);
-  return initialState;
-};
-
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  percent,
-}) => {
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${(percent * 100).toFixed(0)}%`}
-    </text>
-  );
-};
+import { geneticAlgorithm } from "core/algorithms";
+import {
+  makeRandomSkeleton,
+  firstProblemSkeleton,
+  secondProblemSkeleton,
+} from "problems";
+import { getState, renderCustomizedLabel } from "./utils";
 
 const Genetic = () => {
-  const initialState = getState(4);
-  const [state, setState] = useState(initialState);
+  const [amountCategories, setAmountCategories] = useState(4);
+  const [amountTests, setAmountTests] = useState(8);
+  const [suitsTotalCount, setSuitsTotalCount] = useState(4);
+  const [state, setState] = useState(null);
+  const [generalDiff, setGeneralDiff] = useState(null);
   const [iterationData, setIterationData] = useState([]);
   const [processing, setProcessing] = useState(false);
   const [iterations, setIterations] = useState(10);
   const [numberOfParents, setNumberOfParents] = useState(16);
-  const [suitsTotalCount, setSuitsTotalCount] = useState(4);
+  const fileRef = useRef();
+
+  const createStateHandler = (skeleton) => {
+    setProcessing(true);
+    const newSkeleton =
+      skeleton || makeRandomSkeleton(amountTests, amountCategories);
+    const newState = getState(newSkeleton, suitsTotalCount);
+    setState(newState);
+    setProcessing(false);
+  };
+
+  const handleFile = async (file) => {
+    if (!file) return;
+    const data = await new Response(file).text();
+    const skeleton = JSON.parse(data);
+    createStateHandler(skeleton);
+  };
 
   const algoHandler = () => {
     setProcessing(true);
     const {
       state: newState,
-      metaData: { iterationData: iData },
+      metaData: { iterationData: iData, generalDiff: _generalDiff },
     } = geneticAlgorithm(
       state.clone(),
       suitsTotalCount,
@@ -63,42 +53,110 @@ const Genetic = () => {
     );
     setIterationData(iData);
     setState(newState);
+    setGeneralDiff(_generalDiff);
     setProcessing(false);
   };
   return (
     <div className="table">
-      <div className="row ml-2 mb-3">
+      <div className="row ml-2 mb-5">
         <Button
           variant="contained"
           color="primary"
-          onClick={algoHandler}
+          onClick={() => createStateHandler()}
           disabled={processing}
         >
-          Нажміть для запуску алгоритму
+          Згенерувати індивідуальну задачу
         </Button>
         <TextField
           className="form-control col-1 ml-5"
-          onChange={(e) => setIterations(+e.target.value)}
-          value={iterations}
+          onChange={(e) => setAmountCategories(+e.target.value)}
+          value={amountCategories}
           type="number"
-          label="Кількість ітерацій"
+          label="К-сть категорій"
         />
         <TextField
           className="form-control col-1 ml-5"
-          onChange={(e) => setNumberOfParents(+e.target.value)}
-          value={numberOfParents}
+          onChange={(e) => setAmountTests(+e.target.value)}
+          value={amountTests}
           type="number"
-          label="Кількість батьків"
+          label="К-сть запитань"
         />
         <TextField
           className="form-control col-1 ml-5"
           onChange={(e) => setSuitsTotalCount(+e.target.value)}
           value={suitsTotalCount}
           type="number"
-          label="Кількість наборів"
+          label="К-сть наборів тестів"
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => createStateHandler(firstProblemSkeleton)}
+          disabled={processing}
+          className="col-1 ml-5"
+        >
+          Обрати ІЗ #1
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => createStateHandler(secondProblemSkeleton)}
+          disabled={processing}
+          className="col-1 ml-5"
+        >
+          Обрати ІЗ #2
+        </Button>
+        <Button variant="contained" component="label" className="col-2 ml-5">
+          Завантажити ІЗ
+          <input
+            type="file"
+            className="d-none"
+            accept=".json"
+            ref={fileRef}
+            onChange={(e) =>
+              handleFile(e.target.files[0])
+                .catch((err) => console.error(err))
+                .finally(() => {
+                  fileRef.current.value = null;
+                })
+            }
+          />
+        </Button>
+      </div>
+      <div className="row ml-2 mb-5">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={algoHandler}
+          disabled={!state || processing}
+        >
+          Натисніть для запуску алгоритму
+        </Button>
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setIterations(+e.target.value)}
+          value={iterations}
+          type="number"
+          label="К-сть ітерацій"
+        />
+        <TextField
+          className="form-control col-1 ml-5"
+          onChange={(e) => setNumberOfParents(+e.target.value)}
+          value={numberOfParents}
+          type="number"
+          label="К-сть батьків"
         />
       </div>
-      <State state={state} />
+      {state && (
+        <div>
+          <State state={state} />
+          {generalDiff && (
+            <div>
+              <i>Часу витрачено: {generalDiff} мс</i>
+            </div>
+          )}
+        </div>
+      )}
 
       {iterationData.map((iteration, i) => {
         const data = [

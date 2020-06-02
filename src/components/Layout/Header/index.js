@@ -7,23 +7,14 @@ const Header = () => (
       <Link to="/">На початок</Link>
     </h5>
     <nav className="ml-auto mr-3">
-      <Link to="/state" className="p-2 text-dark">
-        State
-      </Link>
       <Link to="genetic" className="p-2 text-dark">
         Генетичний
       </Link>
-      <Link to="/dummy1" className="p-2 text-dark">
+      <Link to="/bee" className="p-2 text-dark">
         Бджолиний
       </Link>
       <Link to="/greedy" className="p-2 text-dark">
         Жадібний
-      </Link>
-      <Link to="/link2" className="p-2 text-dark">
-        Link 2
-      </Link>
-      <Link to="/link3" className="p-2 btn btn-outline-primary">
-        Link 3
       </Link>
     </nav>
   </div>
