@@ -9,6 +9,7 @@ import {
   secondProblemSkeleton,
 } from "problems";
 import { getState } from "./utils";
+import {isNumber} from "lodash";
 
 const Bee = () => {
   const [amountCategories, setAmountCategories] = useState(4);
@@ -157,7 +158,7 @@ const Bee = () => {
       {state && (
         <div>
           <State state={state} />
-          {generalDiff && (
+          {isNumber(generalDiff) && (
             <div>
               <i>Часу витрачено: {generalDiff} мс</i>
             </div>

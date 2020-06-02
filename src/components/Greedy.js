@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { isNumber } from "lodash";
 import State from "components/State";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -127,7 +128,7 @@ const Greedy = () => {
       {state && (
         <div>
           <State state={state} />
-          {generalDiff && (
+          {isNumber(generalDiff) && (
             <div>
               <i>Часу витрачено: {generalDiff} мс</i>
             </div>

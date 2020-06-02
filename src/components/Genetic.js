@@ -11,6 +11,7 @@ import {
   secondProblemSkeleton,
 } from "problems";
 import { getState, renderCustomizedLabel } from "./utils";
+import {isNumber} from "lodash";
 
 const Genetic = () => {
   const [amountCategories, setAmountCategories] = useState(4);
@@ -150,7 +151,7 @@ const Genetic = () => {
       {state && (
         <div>
           <State state={state} />
-          {generalDiff && (
+          {isNumber(generalDiff) && (
             <div>
               <i>Часу витрачено: {generalDiff} мс</i>
             </div>
