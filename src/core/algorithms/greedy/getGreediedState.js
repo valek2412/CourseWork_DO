@@ -4,11 +4,12 @@ import State from "../../state";
 const setExtremumSuite = (categoryTests, isIncremented, currentSuite) => {
   const by = isIncremented ? maxBy : minBy;
   const test = by(
-    categoryTests.filter((t) => !t.suite),
+    categoryTests.filter((t) => !t.wasHere),
     "complexity"
   );
   if (!test) return;
   test.suite = currentSuite;
+  test.wasHere = true;
 };
 
 const getGreediedState = (initialState, suitsTotalCount) => {
