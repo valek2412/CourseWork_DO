@@ -10,8 +10,8 @@ import {
   firstProblemSkeleton,
   secondProblemSkeleton,
 } from "problems";
+import { isNumber } from "lodash";
 import { getState, renderCustomizedLabel } from "./utils";
-import {isNumber} from "lodash";
 
 const Genetic = () => {
   const [amountCategories, setAmountCategories] = useState(4);
@@ -65,6 +65,7 @@ const Genetic = () => {
           color="primary"
           onClick={() => createStateHandler()}
           disabled={processing}
+          className="col-3"
         >
           Згенерувати індивідуальну задачу
         </Button>
@@ -130,8 +131,9 @@ const Genetic = () => {
           color="primary"
           onClick={algoHandler}
           disabled={!state || processing}
+          className="col-3"
         >
-          Натисніть для запуску алгоритму
+          Запуск алгоритму
         </Button>
         <TextField
           className="form-control col-1 ml-5"
@@ -145,7 +147,7 @@ const Genetic = () => {
           onChange={(e) => setNumberOfParents(+e.target.value)}
           value={numberOfParents}
           type="number"
-          label="К-сть батьків"
+          label="К-сть генерацій"
         />
       </div>
       {state && (
@@ -157,6 +159,12 @@ const Genetic = () => {
             </div>
           )}
         </div>
+      )}
+
+      {iterationData && (
+        <h4 className="my-4">
+          <b>Дані найкращих особин популяцій</b>
+        </h4>
       )}
 
       {iterationData.map((iteration, i) => {
@@ -180,9 +188,6 @@ const Genetic = () => {
         ];
         return (
           <div key={String(i)} className="mt-3">
-            <h4 className="my-4">
-              <b>Дані найкращих особин популяцій</b>
-            </h4>
             <h6>
               <i>Покоління {i + 1}</i>
             </h6>
