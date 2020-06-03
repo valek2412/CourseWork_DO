@@ -16,7 +16,7 @@ const selection = (population) => {
     }
 
     const [g1, g2] = gladiators;
-    const winner = g1.fitnessValue > g2.fitnessValue ? g1 : g2;
+    const winner = g1.fitnessValue < g2.fitnessValue ? g1 : g2;
     newPopulation.push(winner);
   }
 
