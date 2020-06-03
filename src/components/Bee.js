@@ -8,8 +8,9 @@ import {
   makeRandomSkeleton,
   secondProblemSkeleton,
 } from "problems";
+import { isNumber } from "lodash";
+import Divider from "@material-ui/core/Divider";
 import { getState } from "./utils";
-import {isNumber} from "lodash";
 
 const Bee = () => {
   const [amountCategories, setAmountCategories] = useState(4);
@@ -65,6 +66,7 @@ const Bee = () => {
           color="primary"
           onClick={() => createStateHandler()}
           disabled={processing}
+          className="col-3"
         >
           Згенерувати індивідуальну задачу
         </Button>
@@ -130,8 +132,9 @@ const Bee = () => {
           color="primary"
           onClick={algoHandler}
           disabled={!state || processing}
+          className="col-3"
         >
-          Натисніть для запуска алгоритму
+          Запуск алгоритму
         </Button>
         <TextField
           className="form-control col-1 ml-5"
@@ -165,11 +168,13 @@ const Bee = () => {
           )}
         </div>
       )}
+      {iterationData && (
+        <h4 className="my-4">
+          <b>Дані найкращих особин популяцій</b>
+        </h4>
+      )}
       {iterationData.map((iteration, i) => (
         <div key={String(i)} className="mt-3">
-          <h4 className="my-4">
-            <b>Дані найкращих особин популяцій</b>
-          </h4>
           <h6>
             <i>Покоління {i + 1}</i>
           </h6>
@@ -177,6 +182,7 @@ const Bee = () => {
             <i>Часу витрачено: {iteration.metaData.generalDiff} мс</i>
           </div>
           <State state={iteration.state} />
+          <Divider />
         </div>
       ))}
     </div>
