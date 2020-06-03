@@ -56,6 +56,7 @@ const Greedy = () => {
           color="primary"
           onClick={() => createStateHandler()}
           disabled={processing}
+          className="col-3"
         >
           Згенерувати індивідуальну задачу
         </Button>
@@ -121,8 +122,9 @@ const Greedy = () => {
           color="primary"
           onClick={algoHandler}
           disabled={!state || processing}
+          className="col-3"
         >
-          Натисніть для запуску алгоритму
+          Запуск алгоритму
         </Button>
       </div>
       {state && (
