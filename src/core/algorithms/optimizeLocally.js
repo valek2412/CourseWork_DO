@@ -1,12 +1,10 @@
 import State from "core/state";
 
 const getSuitesData = (suiteComplexities) => {
-  const [maxValue, minValue] = [
-    Math.max(suiteComplexities.values),
-    Math.min(suiteComplexities.values),
-  ];
+  const values = [...suiteComplexities.values()];
+  const [maxValue, minValue] = [Math.max(...values), Math.min(...values)];
   const findKey = (value) =>
-    Object.keys({ ...suiteComplexities }).find(
+    [...suiteComplexities.keys()].find(
       (k) => suiteComplexities.get(k) === value
     );
   const [maxSuite, minSuite] = [maxValue |> findKey, minValue |> findKey];
@@ -57,7 +55,7 @@ const optimize = (_state) => {
             const simulatedState = simulateState(tempState, idx, i, j);
 
             // optimized
-            if (simulatedState.fitnessValue > tempState.fitnessValue) {
+            if (simulatedState.fitnessValue < tempState.fitnessValue) {
               isOptimized = true;
               const transponatedMatrixOfOptimizedState = simulatedState.getTransposedTests();
 

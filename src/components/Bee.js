@@ -168,7 +168,7 @@ const Bee = () => {
           )}
         </div>
       )}
-      {iterationData && (
+      {iterationData?.length > 0 && (
         <h4 className="my-4">
           <b>Дані найкращих особин популяцій</b>
         </h4>
