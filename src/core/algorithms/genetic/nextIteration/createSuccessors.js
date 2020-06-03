@@ -25,7 +25,7 @@ const createSuccessors = (_parents) => {
     if (!isArray(selectedParents)) {
       if (selectedParents) {
         // only one
-        successors.push(...selectedParents);
+        successors.push(selectedParents);
       }
       continue;
     }
