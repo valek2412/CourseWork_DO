@@ -1,6 +1,6 @@
 {
   "name": "kursach-do",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Coursework of 'Research operations'",
   "main": "src/index.js",
   "scripts": {
