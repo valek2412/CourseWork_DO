@@ -55,7 +55,7 @@ const State = ({ state }) => (
           <tr>
             <th scope="row">Складність</th>
             {[...state.suiteComplexities]
-              .sort((a, b) => a.complexity - b.complexity)
+              .sort(([a], [b]) => a - b)
               .map(([suite, complexity]) => (
                 <td key={String(suite)}>{complexity}</td>
               ))}
