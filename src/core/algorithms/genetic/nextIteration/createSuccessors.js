@@ -37,7 +37,7 @@ const createSuccessors = (_parents) => {
     const [p2g1, p2g2] = getGenesByCrossoverDot(p2, crossoverDot);
     const newSuccessors = [
       createSuccessor(p1g1, p2g2),
-      createSuccessor(p1g2, p2g1),
+      createSuccessor(p2g1, p1g2),
     ];
     successors.push(...newSuccessors);
   }
