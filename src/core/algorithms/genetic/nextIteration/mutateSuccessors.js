@@ -15,7 +15,7 @@ const mutate = (_state) => {
     state.tests[secondQuestionIndex][randomCategoryIndex].suite,
     state.tests[firstQuestionIndex][randomCategoryIndex].suite,
   ];
-  return new State(state.tests, true);
+  return new State(state.tests);
 };
 
 const mutateSuccessors = (successors) => successors.map((s) => s |> mutate);
